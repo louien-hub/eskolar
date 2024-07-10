@@ -9,7 +9,6 @@ class AvailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(''),
       ),
       body: Center(
         child: Container(
@@ -23,7 +22,7 @@ class AvailPage extends StatelessWidget {
                     Container(
                       padding: EdgeInsets.fromLTRB(15.0, 0, 0.0, 0.0),
                       child: Text(
-                        'Assistsance',
+                        'Assistance',
                         style: TextStyle(
                           fontSize: 34.0,
                           fontWeight: FontWeight.bold,
@@ -53,32 +52,32 @@ class AvailPage extends StatelessWidget {
                     ),
                   ],
                 ),
+                SizedBox(height: 50.0),
+                
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: 10.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/app'); // Navigate to /login route
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/signup');
                     },
-                    child: Text(
-                      'Educational Assistance',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Montserrat',
+                    child: Text('Educational Assistance'),
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: Size(double.infinity, 60),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
                       ),
                     ),
                   ),
-                ),
+                ),SizedBox(height: 25.0),
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: 10.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/app'); // Navigate to /login route
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/signup');
                     },
-                    child: Text(
-                      'CHED Scholarship',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Montserrat',
+                    child: Text('CHED Scholarship'),
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: Size(double.infinity, 60),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
                       ),
                     ),
                   ),

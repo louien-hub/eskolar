@@ -45,43 +45,51 @@ class GetStartedPage extends StatelessWidget {
       body: Center(
         child: Stack(
           children: [
-            Positioned(
-              top: 50, // Adjust the top position as needed
-              left: 16,
-              right: 16,
-              child: Container(
-                height: 380, // Adjust this height as needed
-                child: FittedBox(
-                  fit: BoxFit.contain,
-                  child: Image.asset('assets/img.png'),
+            Container(
+              child: Positioned(
+                top: 50, // Adjust the top position as needed
+                left: 16,
+                right: 16,
+                child: Container(
+                  height: 380, // Adjust this height as needed
+                  child: FittedBox(
+                    fit: BoxFit.contain,
+                    child: Image.asset('assets/img.png'),
+                  ),
                 ),
               ),
             ),
-            Positioned(
-              top: 400, // Adjust the top position to be below the image
-              left: 16,
-              right: 16,
-              child: Column(
-                children: <Widget>[
-                  Text(
-                    'E-Skolar ng Bayan:\nAn Educational Assistance Program',
-                    style: TextStyle(fontSize: 24.0, color: Colors.white),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 20.0),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/signup');
-                    },
-                    child: Text('Get Started!'),
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: Size(double.infinity, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
+            Container(
+              child: Align(
+                alignment: Alignment.center,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Text(
+                          'E-Skolar ng Bayan:\nAn Educational Assistance Program',
+                          style: TextStyle(fontSize: 24.0, color: Colors.white),
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(height: 20.0),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/signup');
+                          },
+                          child: Text('Get Started!'),
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: Size(double.infinity, 50),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
+                ),
               ),
             ),
           ],
