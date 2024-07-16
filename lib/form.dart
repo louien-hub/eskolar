@@ -25,10 +25,13 @@ class _MyHomePageState extends State<FormPage> {
   bool _beneficiaryCheckedSelf = false;
   bool _beneficiaryCheckedRelative = false;
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('E-Skolar')),
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: Text('E-Skolar'),
+      backgroundColor: Colors.blue, // Changed to Colors.blue
+    ),
       body: SingleChildScrollView(
         child: Form(
           key: _formKey,
