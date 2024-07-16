@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class FormPage extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _FormPageState createState() => _FormPageState();
 }
 
-class _MyHomePageState extends State<FormPage> {
+class _FormPageState extends State<FormPage> {
   final _formKey = GlobalKey<FormState>();
   String _lastName = '', _firstName = '', _middleName = '', _extensionName = '';
   String _address = '', _municipality = '', _contactNumber = '';
@@ -21,17 +22,17 @@ class _MyHomePageState extends State<FormPage> {
   String _beneficiaryCivilStatus = '', _beneficiaryGcashNumber = '';
 
   final List<String> _municipalities = ['Bauan', 'Lobo', 'Mabini', 'San Luis', 'San Pascual', 'Tingloy'];
-  final List<String> _genders = ['Male', 'Female'];  
+  final List<String> _genders = ['Male', 'Female'];
   bool _beneficiaryCheckedSelf = false;
   bool _beneficiaryCheckedRelative = false;
 
-@override
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(
-      title: Text('E-Skolar'),
-      backgroundColor: Colors.blue, // Changed to Colors.blue
-    ),
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('E-Skolar'),
+        backgroundColor: Colors.blue,
+      ),
       body: SingleChildScrollView(
         child: Form(
           key: _formKey,
@@ -49,9 +50,11 @@ Widget build(BuildContext context) {
                 _buildDropdown('Municipality', _municipalities, _municipality, (value) => _municipality = value!),
                 _buildTextField('Contact No.', (value) => _contactNumber = value!),
                 _buildDateField(context, (pickedDate) {
-                  _dateOfBirth = pickedDate;
-                  _dateOfBirthString = DateFormat('dd/MM/yyyy').format(pickedDate);
-                  _age = _calculateAge(pickedDate);
+                  setState(() {
+                    _dateOfBirth = pickedDate;
+                    _dateOfBirthString = DateFormat('dd/MM/yyyy').format(pickedDate);
+                    _age = _calculateAge(pickedDate);
+                  });
                 }, _dateOfBirthString),
                 _buildTextField('Age', (value) => _age = value!, enabled: true, initialValue: _age),
                 _buildDropdown('Gender', _genders, _gender, (value) => _gender = value!),
@@ -62,42 +65,42 @@ Widget build(BuildContext context) {
                 _buildTextField('Semester', (value) => _semester = value!),
                 _buildTextField('Academic Year', (value) => _academicYear = value!),
                 _buildSectionTitle(
-  'BENEFICIARY IDENTIFYING INFORMATION:',
-  trailing: Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      SizedBox(height: 10), // Add space between title and checkboxes
-      Row(
-        children: [
-          Checkbox(
-            value: _beneficiaryCheckedRelative,
-            onChanged: (bool? value) {
-              setState(() {
-                _beneficiaryCheckedRelative = value ?? false;
-                _beneficiaryCheckedSelf = !_beneficiaryCheckedRelative;
-              });
-            },
-          ),
-          Text('Relative'),
-        ],
-      ),
-      Row(
-        children: [
-          Checkbox(
-            value: _beneficiaryCheckedSelf,
-            onChanged: (bool? value) {
-              setState(() {
-                _beneficiaryCheckedSelf = value ?? false;
-                _beneficiaryCheckedRelative = !_beneficiaryCheckedSelf;
-              });
-            },
-          ),
-          Text('Self'),
-        ],
-      ),
-    ],
-  ),
-),
+                  'BENEFICIARY IDENTIFYING INFORMATION:',
+                  trailing: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: _beneficiaryCheckedRelative,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                _beneficiaryCheckedRelative = value ?? false;
+                                _beneficiaryCheckedSelf = !_beneficiaryCheckedRelative;
+                              });
+                            },
+                          ),
+                          Text('Relative'),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: _beneficiaryCheckedSelf,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                _beneficiaryCheckedSelf = value ?? false;
+                                _beneficiaryCheckedRelative = !_beneficiaryCheckedSelf;
+                              });
+                            },
+                          ),
+                          Text('Self'),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
                 _buildTextField('Last Name', (value) => _beneficiaryLastName = value!),
                 _buildTextField('First Name', (value) => _beneficiaryFirstName = value!),
                 _buildTextField('Middle Name', (value) => _beneficiaryMiddleName = value!),
@@ -106,9 +109,11 @@ Widget build(BuildContext context) {
                 _buildDropdown('Municipality', _municipalities, _beneficiaryMunicipality, (value) => _beneficiaryMunicipality = value!),
                 _buildTextField('Contact No.', (value) => _beneficiaryContactNumber = value!),
                 _buildDateField(context, (pickedDate) {
-                  _beneficiaryDateOfBirth = pickedDate;
-                  _beneficiaryDateOfBirthString = DateFormat('dd/MM/yyyy').format(pickedDate);
-                  _beneficiaryAge = _calculateAge(pickedDate);
+                  setState(() {
+                    _beneficiaryDateOfBirth = pickedDate;
+                    _beneficiaryDateOfBirthString = DateFormat('dd/MM/yyyy').format(pickedDate);
+                    _beneficiaryAge = _calculateAge(pickedDate);
+                  });
                 }, _beneficiaryDateOfBirthString),
                 _buildTextField('Age', (value) => _beneficiaryAge = value!, enabled: true, initialValue: _beneficiaryAge),
                 _buildDropdown('Gender', _genders, _beneficiaryGender, (value) => _beneficiaryGender = value!),
@@ -183,8 +188,8 @@ Widget build(BuildContext context) {
         TextFormField(
           readOnly: true,
           decoration: InputDecoration(
-            labelText: 'Date of Birth (dd/MM/yyyy)', 
-            border: OutlineInputBorder()
+            labelText: 'Date of Birth (dd/MM/yyyy)',
+            border: OutlineInputBorder(),
           ),
           onTap: () => _selectDate(context, onDateSelected),
           controller: TextEditingController(text: dateString),
@@ -195,7 +200,7 @@ Widget build(BuildContext context) {
     );
   }
 
-  void _selectDate(BuildContext context, Function(DateTime) onDateSelected) async {
+  Future<void> _selectDate(BuildContext context, Function(DateTime) onDateSelected) async {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -203,9 +208,7 @@ Widget build(BuildContext context) {
       lastDate: DateTime.now(),
     );
     if (picked != null) {
-      setState(() {
-        onDateSelected(picked);
-      });
+      onDateSelected(picked);
     }
   }
 
@@ -239,8 +242,9 @@ Widget build(BuildContext context) {
     print('Semester: $_semester');
     print('Academic Year: $_academicYear');
 
+    print('--- BENEFICIARY INFORMATION ---');
     print('Last Name: $_beneficiaryLastName');
-    print('irst Name: $_beneficiaryFirstName');
+    print('First Name: $_beneficiaryFirstName');
     print('Middle Name: $_beneficiaryMiddleName');
     print('Extension Name: $_beneficiaryExtensionName');
     print('Address: $_beneficiaryAddress');
@@ -254,6 +258,4 @@ Widget build(BuildContext context) {
     print('Civil Status: $_beneficiaryCivilStatus');
     print('GCash Number: $_beneficiaryGcashNumber');
   }
-  
-  DateFormat(String s) {}
 }
