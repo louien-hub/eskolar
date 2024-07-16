@@ -8,6 +8,7 @@ import 'signup.dart'; // Import the second page file
 import 'login.dart';
 import 'app.dart';
 import 'avail.dart';
+import 'form.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => LoginPage(),
         '/avail': (context) => AvailPage(),
         '/app': (context) => ApplicationPage(),
+        '/form': (context) => FormPage()
       },
     );
   }

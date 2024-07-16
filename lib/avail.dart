@@ -57,7 +57,7 @@ class AvailPage extends StatelessWidget {
                 Container(
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/app');
+                      Navigator.pushNamed(context, '/form');
                     },
                     child: Text('Educational Assistance'),
                     style: ElevatedButton.styleFrom(
