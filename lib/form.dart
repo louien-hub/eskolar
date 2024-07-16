@@ -59,33 +59,42 @@ class _MyHomePageState extends State<FormPage> {
                 _buildTextField('Semester', (value) => _semester = value!),
                 _buildTextField('Academic Year', (value) => _academicYear = value!),
                 _buildSectionTitle(
-                  'BENEFICIARY IDENTIFYING INFORMATION:',
-                  trailing: Row(
-                    children: [
-                      Checkbox(
-                        value: _beneficiaryCheckedSelf,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            _beneficiaryCheckedSelf = value ?? false;
-                            _beneficiaryCheckedRelative = !_beneficiaryCheckedSelf;
-                          });
-                        },
-                      ),
-                      Text('Self'),
-                      SizedBox(width: 10),
-                      Checkbox(
-                        value: _beneficiaryCheckedRelative,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            _beneficiaryCheckedRelative = value ?? false;
-                            _beneficiaryCheckedSelf = !_beneficiaryCheckedRelative;
-                          });
-                        },
-                      ),
-                      Text('Relative'),
-                    ],
-                  ),
-                ),
+  'BENEFICIARY IDENTIFYING INFORMATION:',
+  trailing: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      SizedBox(height: 10), // Add space between title and checkboxes
+      Row(
+        children: [
+          Checkbox(
+            value: _beneficiaryCheckedRelative,
+            onChanged: (bool? value) {
+              setState(() {
+                _beneficiaryCheckedRelative = value ?? false;
+                _beneficiaryCheckedSelf = !_beneficiaryCheckedRelative;
+              });
+            },
+          ),
+          Text('Relative'),
+        ],
+      ),
+      Row(
+        children: [
+          Checkbox(
+            value: _beneficiaryCheckedSelf,
+            onChanged: (bool? value) {
+              setState(() {
+                _beneficiaryCheckedSelf = value ?? false;
+                _beneficiaryCheckedRelative = !_beneficiaryCheckedSelf;
+              });
+            },
+          ),
+          Text('Self'),
+        ],
+      ),
+    ],
+  ),
+),
                 _buildTextField('Last Name', (value) => _beneficiaryLastName = value!),
                 _buildTextField('First Name', (value) => _beneficiaryFirstName = value!),
                 _buildTextField('Middle Name', (value) => _beneficiaryMiddleName = value!),
