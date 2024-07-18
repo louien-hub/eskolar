@@ -12,7 +12,7 @@ class _FormPageState extends State<FormPage> {
   String _address = '', _municipality = '', _contactNumber = '';
   DateTime? _dateOfBirth;
   String _dateOfBirthString = '', _gender = '', _age = '';
-  String _civilStatus = '', _gcashNumber = '', _courseProgram = '';
+  String _selectedCivilStatus = '', _gcashNumber = '', _courseProgram = '';
   String _yearLevel = '', _semester = '', _academicYear = '';
 
   String _beneficiaryLastName = '', _beneficiaryFirstName = '', _beneficiaryMiddleName = '', _beneficiaryExtensionName = '';
@@ -23,6 +23,7 @@ class _FormPageState extends State<FormPage> {
 
   final List<String> _municipalities = ['Bauan', 'Lobo', 'Mabini', 'San Luis', 'San Pascual', 'Tingloy'];
   final List<String> _genders = ['Male', 'Female'];
+  final List<String> _civilStatusOptions = ['Single', 'Married', 'Divorced', 'Widowed', 'Others'];
   bool _beneficiaryCheckedSelf = false;
   bool _beneficiaryCheckedRelative = false;
 
@@ -33,7 +34,9 @@ class _FormPageState extends State<FormPage> {
         title: Text('E-Skolar'),
         backgroundColor: Colors.blue,
       ),
-      body: SingleChildScrollView(
+          body: Container(
+      color: Colors.white, // Set your desired background color here
+      child: SingleChildScrollView(
         child: Form(
           key: _formKey,
           child: Padding(
@@ -58,7 +61,7 @@ class _FormPageState extends State<FormPage> {
                 }, _dateOfBirthString),
                 _buildTextField('Age', (value) => _age = value!, enabled: true, initialValue: _age),
                 _buildDropdown('Gender', _genders, _gender, (value) => _gender = value!),
-                _buildTextField('Civil Status', (value) => _civilStatus = value!),
+                _buildDropdown('Civil Status', _civilStatusOptions, _selectedCivilStatus, (value) => _selectedCivilStatus = value!),
                 _buildTextField('GCash No.', (value) => _gcashNumber = value!),
                 _buildTextField('Course/Program', (value) => _courseProgram = value!),
                 _buildTextField('Year Level', (value) => _yearLevel = value!),
@@ -117,7 +120,7 @@ class _FormPageState extends State<FormPage> {
                 }, _beneficiaryDateOfBirthString),
                 _buildTextField('Age', (value) => _beneficiaryAge = value!, enabled: true, initialValue: _beneficiaryAge),
                 _buildDropdown('Gender', _genders, _beneficiaryGender, (value) => _beneficiaryGender = value!),
-                _buildTextField('Civil Status', (value) => _beneficiaryCivilStatus = value!),
+                 _buildDropdown('Civil Status', _civilStatusOptions, _beneficiaryCivilStatus, (value) => _beneficiaryCivilStatus = value!),
                 _buildTextField('GCash No.', (value) => _beneficiaryGcashNumber = value!),
                 SizedBox(height: 20),
                 ElevatedButton(
@@ -135,6 +138,7 @@ class _FormPageState extends State<FormPage> {
           ),
         ),
       ),
+          ),
     );
   }
 
@@ -152,7 +156,22 @@ class _FormPageState extends State<FormPage> {
     );
   }
 
-  Widget _buildTextField(String label, Function(String?) onSave, {bool enabled = true, String initialValue = '', bool isOptional = false}) {
+Widget _buildTextField(String label, Function(String?) onSave, {bool enabled = true, String initialValue = '', bool isOptional = false, List<String>? dropdownItems}) {
+  if (dropdownItems != null) {
+    return Column(
+      children: [
+        DropdownButtonFormField<String>(
+          decoration: InputDecoration(labelText: label, border: OutlineInputBorder()),
+          value: initialValue.isNotEmpty ? initialValue : null,
+          items: dropdownItems.map((String item) => DropdownMenuItem<String>(value: item, child: Text(item))).toList(),
+          onChanged: onSave,
+          validator: (value) => value == null || value.isEmpty ? 'Please select your $label' : null,
+          dropdownColor: Colors.white, // Set your desired dropdown background color here
+        ),
+        SizedBox(height: 10),
+      ],
+    );
+  } else {
     return Column(
       children: [
         TextFormField(
@@ -166,6 +185,8 @@ class _FormPageState extends State<FormPage> {
       ],
     );
   }
+}
+
 
   Widget _buildDropdown(String label, List<String> items, String selectedItem, Function(String?) onChanged) {
     return Column(
@@ -176,51 +197,63 @@ class _FormPageState extends State<FormPage> {
           items: items.map((String item) => DropdownMenuItem<String>(value: item, child: Text(item))).toList(),
           onChanged: (value) => setState(() => onChanged(value)),
           validator: (value) => value == null || value.isEmpty ? 'Please select your $label' : null,
+          dropdownColor: Colors.white, // Set your desired dropdown background color here
         ),
         SizedBox(height: 10),
       ],
     );
   }
 
-  Widget _buildDateField(BuildContext context, Function(DateTime) onDateSelected, String dateString) {
-    return Column(
-      children: [
-        TextFormField(
-          readOnly: true,
-          decoration: InputDecoration(
-            labelText: 'Date of Birth (dd/MM/yyyy)',
-            border: OutlineInputBorder(),
+Widget _buildDateField(BuildContext context, Function(DateTime) onDateSelected, String dateString) {
+  return Column(
+    children: [
+      TextFormField(
+        readOnly: true,
+        decoration: InputDecoration(
+          labelText: 'Date of Birth (dd/MM/yyyy)',
+          border: OutlineInputBorder(),
+        ),
+        onTap: () => _selectDate(context, onDateSelected),
+        controller: TextEditingController(text: dateString),
+        validator: (value) => dateString.isEmpty ? 'Please enter your date of birth.' : null,
+      ),
+      SizedBox(height: 10),
+    ],
+  );
+}
+
+Future<void> _selectDate(BuildContext context, Function(DateTime) onDateSelected) async {
+  final DateTime? picked = await showDatePicker(
+    context: context,
+    initialDate: DateTime.now(),
+    firstDate: DateTime(1900),
+    lastDate: DateTime.now(),
+    builder: (BuildContext context, Widget? child) {
+      return Theme(
+        data: ThemeData.light().copyWith(
+          colorScheme: ColorScheme.light().copyWith(
+            primary: Colors.blue, // This will change the header background color
           ),
-          onTap: () => _selectDate(context, onDateSelected),
-          controller: TextEditingController(text: dateString),
-          validator: (value) => dateString.isEmpty ? 'Please enter your date of birth.' : null,
+          dialogBackgroundColor: Colors.white, // This will change the background color
         ),
-        SizedBox(height: 10),
-      ],
-    );
+        child: child!,
+      );
+    },
+  );
+  if (picked != null) {
+    onDateSelected(picked);
   }
+}
 
-  Future<void> _selectDate(BuildContext context, Function(DateTime) onDateSelected) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
-    );
-    if (picked != null) {
-      onDateSelected(picked);
-    }
+String _calculateAge(DateTime birthDate) {
+  DateTime currentDate = DateTime.now();
+  int age = currentDate.year - birthDate.year;
+  if (currentDate.month < birthDate.month ||
+      (currentDate.month == birthDate.month && currentDate.day < birthDate.day)) {
+    age--;
   }
-
-  String _calculateAge(DateTime birthDate) {
-    DateTime currentDate = DateTime.now();
-    int age = currentDate.year - birthDate.year;
-    if (currentDate.month < birthDate.month ||
-        (currentDate.month == birthDate.month && currentDate.day < birthDate.day)) {
-      age--;
-    }
-    return age.toString();
-  }
+  return age.toString();
+}
 
   void _printFormData() {
     print('Last Name: $_lastName');
@@ -235,7 +268,7 @@ class _FormPageState extends State<FormPage> {
       print('Age: $_age');
     }
     print('Gender: $_gender');
-    print('Civil Status: $_civilStatus');
+    print('Civil Status: $_selectedCivilStatus');
     print('GCash Number: $_gcashNumber');
     print('Course/Program: $_courseProgram');
     print('Year Level: $_yearLevel');
