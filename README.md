@@ -1,6 +1,6 @@
 # Flutter Installation Guide
 
-![Flutter Logo](https://flutter.dev/assets/images/shared/brand/flutter/logo/flutter-lockup.png)
+![Flutter Logo](https://storage.googleapis.com/cms-storage-bucket/6a07d8a62f4308d2b854.svg)
 
 A comprehensive guide to installing and setting up Flutter on your system.
 
