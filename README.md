@@ -65,11 +65,11 @@ Before you begin, ensure you have met the following requirements:
         ```
     - Create a new Flutter project:
         ```bash
-        flutter create my_app
+        flutter create eskolar
         ```
     - Navigate to your new project directory:
         ```bash
-        cd my_app
+        cd eskolar
         ```
     - Run the app:
         ```bash
@@ -85,6 +85,6 @@ Before you begin, ensure you have met the following requirements:
 Once Flutter is installed, you can start a new Flutter project using the following command:
 
 ```bash
-flutter create my_app
-cd my_app
+flutter create eskolar
+cd eskolar
 flutter run
